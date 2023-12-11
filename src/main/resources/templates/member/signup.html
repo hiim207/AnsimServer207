@@ -198,7 +198,7 @@
 	
 //------------------------취미 전체 선택-------------------------------
 const selectAll = (checkElement) => {
-	
+
 	const checkboxes = document.getElementsByName('hobby');
 	checkboxes.forEach((checkbox) => {
 		checkbox.checked = checkElement.checked;
@@ -266,34 +266,42 @@ const idCheck = async () => {   //function async idCheck 이런 형태??
 
 			<!--성별-->
 			<div style="width:90%; text-align:left; position:relative; left:35px; border-bottom:2px solid #adadad; margin:10px; padding:10px;">
-			    성별 : 
-			    <label><input type="radio" name="gender" value="남성">남성</label>
-			    <label><input type="radio" name="gender" value="여성">여성</label><br>
-				<!-- mbti -->
-				취미 :
-			    <label><input type="checkbox" id="all" name="all" onclick="selectAll(this)">전체 선택</label>
-			    <label><input type="checkbox" name="hobby" value="음악감상">음악 감상</label>
-			    <label><input type="checkbox" name="hobby" value="영화보기">영화 보기</label>
-			    <label><input type="checkbox" name="hobby" value="스포츠">스포츠</label><br>
-				<!-- -->
-				직업 :
-			   	<select name="job">
-			   		<option value="00" disabled selected>--아래 내용 중에서 선택--</option>
-			   		<option value="회사원">회사원</option>
-			   		<option value="공무원">공무원</option>
-			   		<option value="자영업">자영업</option>			   		
-			   	</select>
+			성별 :
+			<label><input type="radio" name="gender" value="남성">남성</label>
+			<label><input type="radio" name="gender" value="여성">여성</label><br>
+			<!-- mbti -->
+			MBTI :
+			<select name="job">
+				<option value="00" disabled selected>--아래 내용 중에서 선택--</option>
+				<option value="ISTJ">ISTJ</option>
+				<option value="ISTP">ISTP</option>
+				<option value="ISFJ">ISFJ</option>
+				<option value="ISFP">ISFP</option>
+				<option value="INFJ">INFJ</option>
+				<option value="INTJ">INTJ</option>
+				<option value="INFP">INFP</option>
+				<option value="INTP">INTP</option>
+				<option value="ESTJ">ESTJ</option>
+				<option value="ESFP">ESFP</option>
+				<option value="ESFJ">ESFJ</option>
+				<option value="ESTP">ESTP</option>
+				<option value="ENFP">ENFP</option>
+				<option value="ENTP">ENTP</option>
+				<option value="ENFJ">ENFJ</option>
+				<option value="ENTJ">ENTJ</option>
+			</select>
+
 			   	<br>
 			</div>
 
 			<!--전화번호-->
 			<input type="text" id="telno" class="input_field" name="telno" placeholder="전화번호를 입력하세요">
-			<!-- 이메일 -->
+			<!-- 이메일 dto, db 추가해야함-->
 			<input type="text" id="email" class="input_field" name="email" placeholder="example@exmaple.com 형식으로 입력하세요">
 
 			<p style="color:red">일반 사용자 권한으로 등록됩니다.</p><br><br>
 			<textarea class="input_content" id="description" cols="100" rows="500" name="description" placeholder="자기소개를 입력해 주세요"></textarea><br>
-			<input type="button" id="btnRegister" class="btn_write" value="여기를 클릭하세요.">
+			<input type="button" id="btnRegister" class="btn_write" value="여기를 클릭하세요."><br>
 		</form>
 	</div>
 </div>

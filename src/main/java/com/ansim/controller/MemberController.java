@@ -44,12 +44,12 @@ public class MemberController {
 		if(autologin.equals("NEW")) {
 			authkey = UUID.randomUUID().toString().replaceAll("-", "");
 			member.setAuthkey(authkey);
-			service.authkeyUpdate(member);
+			service.modifyAuthkey(member);
 		}
 
 		//authkey가 클라이언트에 쿠키로 존재할 경우 로그인 과정 없이 세션 생성 후 게시판 목록 페이지로 이동
 		if(autologin.equals("PASS")) {
-			MemberDTO memberInfo = service.memberInfoByAuthkey(member);
+			MemberDTO memberInfo = service.findAuthkey(member);
 			if(memberInfo != null) {
 				//세션 생성
 				session.setMaxInactiveInterval(3600*24*7);//세션 유지 기간 설정
@@ -62,12 +62,12 @@ public class MemberController {
 		}
 
 		//아이디 존재 여부 확인
-		if(service.idCheck(member.getUser_id()) == 0) {
+		if(service.findIdCheck(member.getUser_id()) == 0) {
 			return "{\"message\":\"ID_NOT_FOUND\"}";
 		}
 
 		//패스워드가 올바르게 들어 왔는지 확인
-		if(!pwdEncoder.matches(member.getPassword(), service.memberInfo(member.getUser_id()).getPassword())) {
+		if(!pwdEncoder.matches(member.getPassword(), service.findMember(member.getUser_id()).getPassword())) {
 			//잘못된 패스워드 일때
 			return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
 		}else {
@@ -75,16 +75,16 @@ public class MemberController {
 
 			//마지막 로그인 날짜 등록
 			member.setLast_login_date(LocalDate.now());
-			service.lastlogindateUpdate(member);
+			service.modifyLastLoginDate(member);
 
-			LocalDate lastPwDate = service.memberInfo(member.getUser_id()).getLast_pw_date();
-			int pwCheck = service.memberInfo(member.getUser_id()).getPw_chk();
+			LocalDate lastPwDate = service.findMember(member.getUser_id()).getLast_pw_date();
+			int pwCheck = service.findMember(member.getUser_id()).getPw_chk();
 
 			//세션 생성
 			session.setMaxInactiveInterval(3600*24*7);//세션 유지 기간 설정
-			session.setAttribute("userid", service.memberInfo(member.getUser_id()).getUser_id());
-			session.setAttribute("username", service.memberInfo(member.getUser_id()).getUser_nm());
-			session.setAttribute("role", service.memberInfo(member.getUser_id()).getRole());
+			session.setAttribute("userid", service.findMember(member.getUser_id()).getUser_id());
+			session.setAttribute("username", service.findMember(member.getUser_id()).getUser_nm());
+			session.setAttribute("role", service.findMember(member.getUser_id()).getRole());
 
 			//패스워드 확인 후 마지막 패스워드 변경일이 30일이 경과 되었을 경우 ...
 			if(LocalDate.now().isAfter(lastPwDate.plusDays(pwCheck*30))){
@@ -136,7 +136,7 @@ public class MemberController {
 
 
 		}
-		service.memberInfoRegistry(member);
+		service.addMember(member);
 
 
 		Map<String, String> data = new HashMap<>();
@@ -153,7 +153,7 @@ public class MemberController {
 	@ResponseBody
 	@PostMapping("/member/idCheck")
 	public int postIdCheck(@RequestParam String userid) throws Exception {
-		int result = service.idCheck(userid);
+		int result = service.findIdCheck(userid);
 
 		return result;
 		//if(result == 0)

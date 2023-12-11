@@ -13,32 +13,32 @@ public class MemberServiceImpl implements MemberService {
 
     // 회원 등록
     @Override
-    public void memberInfoRegistry(MemberDTO member) throws Exception {
-        mapper.memberInfoRegistry(member);
+    public void addMember(MemberDTO member) throws Exception {
+        mapper.insertMember(member);
     }
 
     @Override
-    public int idCheck(String user_id) throws Exception {
-        return mapper.idCheck(user_id);
+    public int findIdCheck(String user_id) throws Exception {
+        return mapper.selectIdCheck(user_id);
     }
 
     @Override
-    public MemberDTO memberInfo(String user_id) throws Exception {
-        return mapper.memberInfo(user_id);
+    public MemberDTO findMember(String user_id) throws Exception {
+        return mapper.selectMember(user_id);
     }
 
     @Override
-    public void lastlogindateUpdate(MemberDTO member) throws Exception {
-        mapper.lastlogindateUpdate(member);
+    public void modifyLastLoginDate(MemberDTO member) throws Exception {
+        mapper.updateLastLoginDate(member);
     }
 
     @Override
-    public void authkeyUpdate(MemberDTO member) throws Exception {
-        mapper.authkeyUpdate(member);
+    public void modifyAuthkey(MemberDTO member) throws Exception {
+        mapper.updateAuthkey(member);
     }
 
     @Override
-    public MemberDTO memberInfoByAuthkey(MemberDTO member) throws Exception {
-        return mapper.memberInfoByAuthkey(member);
+    public MemberDTO findAuthkey(MemberDTO member) throws Exception {
+        return mapper.selectAuthkey(member);
     }
 }
