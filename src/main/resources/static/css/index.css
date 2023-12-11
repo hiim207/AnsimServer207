@@ -1,0 +1,411 @@
+@charset "UTF-8";
+body {font-family: "나눔고딕", "맑은고딕";}
+h1{font-family: "HY견고딕"; color: rosybrown;}
+a:link {color: black;}
+a:visited {color: black;}
+a:hover {color: red;}
+a {text-decoration: none; cursor: hand;}
+#hypertext { text-decoration-line: none; cursor: hand; }
+
+.main {
+    text-align: center;
+}
+.topBanner{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    max-width: 500px;
+    height: auto;
+    display: block;
+    margin: auto;
+}
+.login{
+    width:50%;
+    height:auto;
+    padding:20px 20px;
+    background-color:#FFFFFF;
+    text-align:center;
+    border:5px solid gray;
+    border-radius: 30px;
+    margin:auto;
+}
+.userid, .password {
+    width: 80%;
+    height: 25px;
+    border: none;
+    border-bottom: 2px solid #adadad;
+    outline: none;
+    color: #636e72;
+    font-size: 20px;
+    background: none;
+    margin-top: 20px;
+}
+.bottomText{
+    text-align:center;
+    font-size: 20px;
+}
+.btn_login{
+    position: relative;
+    left: 40%;
+    transform: translateX(-50%);
+    margin-bottom: 40px;
+    width: 80%;
+    height: 40px;
+    background: linear-gradient(125deg,#81ecec,#6c5ce7,#81ecec);
+    background-position: left;
+    background-size:200%;
+    color: white;
+    font-weight: bold;
+    border:none;
+    cursor:pointer;
+    transition: 0.4s;
+    display:inline;
+}
+
+
+.imageZone{
+    border: 2px solid #92AAB0;
+    width: 60%;
+    height: auto;
+    color: 92AAB0;
+    text-align: center;
+    vertical-align: middle;
+    margin: auto;
+    padding: 10px 10px;
+    font-size: 200%;
+}
+.addrSearch{
+    width: 80%;
+    border: none;
+    border-bottom: 2px solid #adadad;
+    margin: 5px;
+    padding:10px 10px;
+    outline: none;
+    color: #636e72;
+    font-size: 16px;
+    height: 25px;
+    background: none;
+}
+
+.tableDiv {
+    text-align: center;
+}
+
+.InfoTable {
+    border-collapse: collapse;
+    width: 800px;
+    margin-left: auto; margin-right: auto;
+
+}
+
+.InfoTable th {
+    color: #168;
+    background: none;
+    text-align: center;
+}
+.InfoTable th, .InfoTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-top: none; /* 상단 테두리 제거 */
+}
+.InfoTable th:first-child, .InfoTable td:first-child {
+    border-left: 0;
+}
+.InfoTable th:last-child, .InfoTable td:last-child {
+    border-right: 0;
+}
+.InfoTable tr td:first-child{
+    text-align: center;
+}
+.InfoTable caption{caption-side: top; }
+
+.navi_top {	width: 1350px; text-align: right; }
+.navi_bottom { text-align: center; }
+
+.boardView {
+    width:60%;
+    height:auto;
+    margin:auto;
+    text-align: left;
+    padding: 20px, 20px;
+    background-color:#FFFFFF;
+    border:4px solid gray;
+    border-radius: 20px;
+}
+
+.field {
+    width: 90%;
+    height:25px;
+    outline:none;
+    color: #636e72;
+    font-size:16px;
+    background: none;
+    border-bottom: 2px solid #adadad;
+    margin: 30px;
+    padding: 10px 10px;
+}
+
+.items{
+    width:90%;
+    border:white;
+    border-bottom: 2px solid gray;
+    /* padding: 10px 10px; */
+    outline: none;
+    color: #636272;
+    height: 35px;
+    background-color:white ;
+    border-radius: 10px;
+}
+
+.content {
+    width: 90%;
+    height: 350px;
+    overflow: auto;
+    margin: 22px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: solid #adadad;
+    text-align: left;
+    font-size: 16px;
+    resize: both;
+}
+
+.WriteForm {
+    width:50%;
+    height:auto;
+    margin: auto;
+    padding: 20px, 20px;
+    text-align: left;
+    background-color:#FFFFFF;
+    text-align: center;
+    border:4px solid gray;
+    border-radius: 30px;
+}
+
+.modifyForm, .ModifyForm{
+    width:60%;
+    height:auto;
+    margin: auto;
+    padding: 20px, 20px;
+    text-align: left;
+    background-color:#FFFFFF;
+    text-align: center;
+    border:4px solid gray;
+    border-radius: 30px;
+}
+.fileList > p {
+    text-align: left;
+    margin-left:10%;
+}
+
+
+.input_field {
+    width: 90%;
+    border:none;
+    border-bottom: 2px solid #adadad;
+    margin: 10px;
+    padding: 10px;
+    outline:none;
+    color: #636e72;
+    font-size:16px;
+    height:25px;
+    background: none;
+}
+
+.input_content{
+    width: 90%;
+    height: 300px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: solid #adadad;
+    font-size: 16px;
+    resize: both;
+}
+
+.btn_modify  {
+    position:relative;
+    left:20%;
+    transform: translateX(-50%);
+    margin-top: 20px;
+    margin-bottom: 10px;
+    width:40%;
+    height:40px;
+    background: red;
+    background-position: left;
+    background-size: 200%;
+    color:white;
+    font-weight: bold;
+    border:none;
+    cursor:pointer;
+    transition: 0.4s;
+    display:inline;
+    border-radius:10px;
+}
+
+.btn_delete  {
+    position:relative;
+    left:20%;
+    transform: translateX(-50%);
+    margin-top: 20px;
+    margin-bottom: 10px;
+    width:40%;
+    height:40px;
+    background: pink;
+    background-position: left;
+    background-size: 200%;
+    color:white;
+    font-weight: bold;
+    border:none;
+    cursor:pointer;
+    transition: 0.4s;
+    display:inline;
+}
+
+.btn_write  {
+    position:relative;
+    left:20%;
+    transform: translateX(-50%);
+    margin-top: 20px;
+    margin-bottom: 10px;
+    width:40%;
+    height:40px;
+    background: red;
+    background-position: left;
+    background-size: 200%;
+    color:white;
+    font-weight: bold;
+    border:none;
+    cursor:pointer;
+    transition: 0.4s;
+    display:inline;
+    border-radius:10px;
+}
+
+.btn_cancel  {
+    position:relative;
+    left:20%;
+    transform: translateX(-50%);
+    margin-top: 20px;
+    margin-bottom: 10px;
+    width:40%;
+    height:40px;
+    background: pink;
+    background-position: left;
+    background-size: 200%;
+    color:white;
+    font-weight: bold;
+    border:none;
+    cursor:pointer;
+    transition: 0.4s;
+    display:inline;
+    border-radius:10px;
+}
+
+.bottom_menu {
+    margin-top: 20px;
+    border-radius:10px;
+}
+
+.bottom_menu > a:link, .bottom_menu > a:visited {
+    background-color: #3584e4;
+    color: white;
+    padding: 15px 25px;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    border-radius:10px;
+}
+
+.bottom_menu > a:hover, .bottom_menu > a:active {
+    background-color: white;
+    color: #3584e4;
+    border: 1px solid #3584e4;
+    text-decoration: none;
+}
+.btn_selectAddr {
+    width: 65px;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid #3584e4;
+    background-color: white;
+    color: #3584e4;
+    font-weight: bold;
+}
+.btn_selectAddr:hover {
+    background-color: #3584e4;
+    color: white;
+    cursor: pointer;
+}
+.pageList {
+    font-size: 20px;
+    margin: 0 30px;
+    color: #215faa;
+}
+.pageList a {
+    text-decoration: none; /* 밑줄 제거 */
+    padding: 5px 10px; /* 간격 조정 */
+}
+
+.pageList a.selected {
+    color: #215faa; /* 선택된 페이지의 글자 색상 변경 */
+}
+
+.fileUploadForm {
+    margin: 5px;
+    padding: 5px 5px 2px 30px;
+    text-align: left;
+    width: 90%;
+}
+
+.fileZone {
+    border: solid #adadad;
+    background-color: #a0a0a0;
+    width: 97%;
+    height: 80px;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    padding: 5px;
+    font-size: 120%;
+}
+
+.fileUploadList {
+    border: solid #adadad;
+    width: 97%;
+    height: auto;
+    padding: 5px;
+    font-size: 120%;
+}
+
+.filename {
+    display: inline-block;
+    vertical-align: top;
+    width: 50%;
+}
+
+.filesize {
+    display: inline-block;
+    vertical-align:top;
+    color: #30693D;
+    width: 30%;
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+.btn_delete, .btn_del {
+    display: inline-block;
+    width: 15%;
+    cursor: pointer;
+    vertical-align: top;
+}
+
+.statusbar {
+    border-bottom: solid 1px #92AAB0;
+    min-height: 25px;
+    width: 96%;
+    padding: 10px 10px 10px 10px;
+    vertical-align: top;
+}
+
+.statusbar:nth-child(odd) {
+    background: #EBEFF0;
+}
