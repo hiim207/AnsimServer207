@@ -4,9 +4,24 @@
     <meta charset="UTF-8">
     <title>map</title>
 </head>
+<script src="/js/getCookie.js"></script>
+<script>
+    const logout = () => {
+        if(confirm('로그아웃하시겠습니까?')){
+
+            let authkey = getCookie('authkey');
+            if(authkey != undefined)
+                document.cookie = 'authkey=' + authkey + ";path=/;max-age=0";
+
+            document.location.href='/member/logout';
+        }
+
+    }
+</script>
 <body>
     <h1>일단 띄운다</h1>
 
     <div><a href="/member/memberInfo">사용자정보</a></div>
+    <div><a href="javascript:logout()">로그아웃</a>&nbsp;&nbsp;</div>
 </body>
 </html>

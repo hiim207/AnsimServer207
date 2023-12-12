@@ -413,3 +413,14 @@ a {text-decoration: none; cursor: hand;}
 .statusbar:nth-child(odd) {
     background: #EBEFF0;
 }
+
+.LogoutView{
+    width:70%;
+    height:auto;
+    margin: auto;
+    padding: 35px;
+    background-color:#FFFFFF;
+    text-align:left;
+    border:5px solid gray;
+    border-radius: 30px;
+}

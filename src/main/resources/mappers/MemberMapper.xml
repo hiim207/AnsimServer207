@@ -38,5 +38,25 @@
 <select id="selectAuthkey" parameterType="com.ansim.dto.MemberDTO" resultType="com.ansim.dto.MemberDTO">
 	select * from MEM_INFO_TBL where authkey = #{authkey}
 </select>
+
+<!-- 아이디 찾기 searchID -->
+<select id="selectSearchId" parameterType="com.ansim.dto.MemberDTO" resultType="string">
+	select user_id from MEM_INFO_TBL where user_nm = #{user_nm} and tel_no = #{tel_no}
+</select>
+
+<!-- 패스워드 찾기 memberPasswordModify(수정) -->
+<update id="updateSearchPassword" parameterType="com.ansim.dto.MemberDTO">
+	update MEM_INFO_TBL set password = #{password}, last_pw_date= #{last_pw_date} where user_id = #{user_id}
+</update>
+
+<!-- 마지막 로그아웃 날짜 등록 하기 lastlogoutdateUpdate -->
+<update id="updateLastLogoutDate" parameterType="com.ansim.dto.MemberDTO">
+	update MEM_INFO_TBL set last_logout_date = #{last_logout_date} where user_id = #{user_id}
+</update>
+
+<!-- 회원 탈퇴 memberOut -->
+<delete id="deleteMember" parameterType="String">
+	delete from MEM_INFO_TBL where user_id=#{user_id}
+</delete>
 	
 </mapper>

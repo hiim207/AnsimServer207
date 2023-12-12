@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원 탈퇴</title>
+<link rel="stylesheet" href="/css/index.css">
+<script src="/js/getCookie.js"></script>
+<style>
+.IDSearchResult {
+  width:80%;
+  height:auto;
+  padding: 20px;
+  background-color:#FFFFFF;
+  text-align:center;
+  border:5px;
+  border-radius: 30px;
+}
+</style>
+<script>
+	
+	const deleteMember = async () => {
+		let formData = new FormData();
+		let user_id = document.querySelector('#user_id').value;
+		let password = document.querySelector('#password').value;
+		
+		formData.append('user_id', user_id);
+	    formData.append('password', password);
+		
+            const response = await fetch('/member/deleteMember', {
+                method: 'POST',
+                body: formData
+            }).then((response) => response.json())
+    		.then((data) => {
+    			if(data.message === 'GOOD'){
+    				alert("회원 탈퇴가 정상적으로 처리되었습니다.")
+    				logout();
+    			}else {
+    				alert("시스템 에러");
+    			}
+    		}).catch((error)=> {
+    			console.log("error = " + error);
+    		})
+            
+	
+}
+
+		
+        
+    const logout = () => {
+	
+	let authkey = getCookie('authkey');
+	let user_id = getCookie('user_id');
+	let password = getCookie('password');
+	if(authkey != undefined)
+		document.cookie = 'authkey=' + authkey + ";path=/;max-age=0";
+	if(user_id != undefined)
+		document.cookie = 'user_id=' + user_id + ";path=/;max-age=0";
+	if(password != undefined)
+		document.cookie = 'password=' + password + ";path=/;max-age=0";	
+	
+	document.location.href='/member/memberSessionOut';
+	
+}
+	
+</script>
+</head>
+<body>
+
+	<div class="main">
+	
+		<div>
+			<img src="/images/steak.png" id="topBanner">
+		</div>
+		
+		<div class="ModifyForm">
+			<form name="memberOutForm" class="memberOutForm" id="memberOutForm" method="post">
+        		<h1>정말로 탈퇴하시겠습니까?</h1>
+     			<div class="IDSearchFormDivision">
+         			<input type="hidden" id="user_id" name="user_id" th:value="${session.user_id}">
+         			<input type="hidden" id="password" name="password" th:value="${session.password}">
+         			<input type="button" class="btn_write" value="확인" onclick="deleteMember()">
+            		<input type="button" class="btn_cancel" value="취소" onclick="history.back()"> 
+     			</div> 
+			</form>
+			<div class='IDSearchResult' id='IDSearchResult'></div>
+    	</div>
+	    
+	</div>
+
+</body>
+</html>

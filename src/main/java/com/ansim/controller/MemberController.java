@@ -109,19 +109,19 @@ public class MemberController {
 		File targetFile;
 
 		if(!multipartFile.isEmpty()) {
-			String org_filename = multipartFile.getOriginalFilename();
+			String org_file_nm = multipartFile.getOriginalFilename();
 			// hello.png
-			String org_fileExtension = org_filename.substring(org_filename.lastIndexOf("."));
+			String org_fileExtension = org_file_nm.substring(org_file_nm.lastIndexOf("."));
 			// askdjfklasjdkfljaskldfasdf + .png
-			String stroed_filename = UUID.randomUUID().toString().replaceAll("-", "") + org_fileExtension;
+			String stored_file_nm = UUID.randomUUID().toString().replaceAll("-", "") + org_fileExtension;
 
 			try {
-				targetFile = new File(path + stroed_filename);
+				targetFile = new File(path + stored_file_nm);
 
 				multipartFile.transferTo(targetFile);
 
-				member.setOrg_file_nm(org_filename);
-				member.setStored_file_nm(stroed_filename);
+				member.setOrg_file_nm(org_file_nm);
+				member.setStored_file_nm(stored_file_nm);
 				member.setFile_size(multipartFile.getSize());
 
 			} catch(Exception e) {
@@ -159,6 +159,119 @@ public class MemberController {
 	public void getMemberInfo(HttpSession session, Model model) throws Exception{
 		String user_id = (String)session.getAttribute("user_id");
 		model.addAttribute("memberInfo", service.findMember(user_id));
+	}
+
+	//로그아웃
+	@GetMapping("/member/logout")
+	public void getLogout(HttpSession session,Model model) throws Exception {
+		String userid = (String)session.getAttribute("user_id");
+		String username = (String)session.getAttribute("user_nm");
+
+		MemberDTO member = new MemberDTO();
+		member.setUser_id(userid);
+		member.setLast_logout_date(LocalDate.now());
+
+		service.modifyLastLoginDate(member);
+
+		model.addAttribute("user_id", userid);
+		model.addAttribute("user_nm", username);
+		session.invalidate(); //모든 세션 종료 --> 로그아웃...
+	}
+
+	//아이디 찾기
+	@GetMapping("/member/searchID")
+	public void getSearchID() {}
+
+	//아이디 찾기
+	@ResponseBody
+	@PostMapping("/member/searchID")
+	public String postSearchID(MemberDTO member) {
+
+		String userid = service.findId(member) == null?"ID_NOT_FOUND":service.findId(member);
+		return "{\"message\":\"" + userid + "\"}";
+	}
+
+	//임시 패스워드 생성
+	@GetMapping("/member/searchPassword")
+	public void getSearchPassword() {}
+
+	//임시 패스워드 생성
+	@ResponseBody
+	@PostMapping("/member/searchPassword")
+	public String postSearchPassword(MemberDTO member) throws Exception{
+		//아이디 존재 여부 확인
+		if(service.findIdCheck(member.getUser_id()) == 0)
+			return "{\"status\":\"ID_NOT_FOUND\"}";
+		//TELNO 확인
+		if(!service.findMember(member.getUser_id()).getTel_no().equals(member.getTel_no()))
+			return "{\"status\":\"TELNO_NOT_FOUND\"}";
+
+		//임시 패스워드 생성
+		String rawTempPW = service.tempPasswordMaker();
+		member.setPassword(pwdEncoder.encode(rawTempPW));
+		member.setLast_pw_date(LocalDate.now());
+		service.modifyPassword(member);
+
+		return "{\"status\":\"GOOD\",\"password\":\"" + rawTempPW + "\"}";
+	}
+
+	//회원 패스워드 변경
+	@GetMapping("/member/memberPasswordModify")
+	public void getMemberPasswordModify() throws Exception { }
+
+	//회원 패스워드 변경
+	@ResponseBody
+	@PostMapping("/member/memberPasswordModify")
+	public String postMemberPasswordModify(@RequestParam("old_password") String old_password,
+										   @RequestParam("new_password") String new_password, HttpSession session) throws Exception {
+
+		String userid = (String)session.getAttribute("user_id");
+
+		//패스워드가 올바르게 들어 왔는지 확인
+		if(!pwdEncoder.matches(old_password, service.findMember(userid).getPassword())) {
+			return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
+		}
+
+		//신규 패스워드로 업데이트
+		MemberDTO member = new MemberDTO();
+		member.setUser_id(userid);
+		member.setPassword(pwdEncoder.encode(new_password));
+		member.setLast_pw_date(LocalDate.now());
+		service.modifyPassword(member);
+
+		return "{\"message\":\"GOOD\"}";
+	}
+
+	//패스워드 변경 후 세션 종료
+	@GetMapping("/member/memberSessionOut")
+	public String getMemberSessionOut(HttpSession session) {
+
+		MemberDTO member = new MemberDTO();
+		member.setUser_id((String)session.getAttribute("user_id"));
+		member.setLast_logout_date(LocalDate.now());
+		service.modifyLogoutDate(member);
+		session.invalidate();
+
+		return "redirect:/";
+	}
+
+	//회원 탈퇴
+	@GetMapping("/member/deleteMember")
+	public void getMemberOut() {}
+
+	@ResponseBody
+	@PostMapping("/member/deleteMember")
+	public Map<String,String> postMemberOut(HttpSession session) throws Exception {
+		String userid = (String)session.getAttribute("user_id");
+
+		service.removeMember(userid);
+
+		//return "{\"message\":\"GOOD\"}";
+
+		Map<String, String> data = new HashMap<>();
+		data.put("message", "GOOD");
+		return data;
+
 	}
 
 

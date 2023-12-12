@@ -24,6 +24,20 @@ public interface MemberMapper {
     //authkey를 존재 여부 확인
     public MemberDTO selectAuthkey(MemberDTO member) throws Exception;
 
+    //아이디 찾기
+    public String selectSearchId(MemberDTO member);
+
+    //패스워드 찾기
+    public void updateSearchPassword(MemberDTO member);
+
+    //임시 패스워드 생성
+    public String tempPasswordMaker();
+
+    //마지막 로그아웃 날짜 등록 하기
+    public void updateLastLogoutDate(MemberDTO member);
+
+    //회원 탈퇴
+    public void deleteMember(String user_id);
 
 
 }

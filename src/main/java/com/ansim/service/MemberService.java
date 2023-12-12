@@ -24,4 +24,19 @@ public interface MemberService {
     //authkey를 존재 여부 확인 selectAuthkey
     public MemberDTO findAuthkey(MemberDTO member) throws Exception;
 
+    //아이디 찾기 selectSearchId
+    public String findId(MemberDTO member);
+
+    //패스워드 찾기 updateSearchPassword
+    public void modifyPassword(MemberDTO member);
+
+    //임시 패스워드 생성
+    public String tempPasswordMaker();
+
+    //마지막 로그아웃 날짜 등록 하기 lastlogoutdateUpdate
+    public void modifyLogoutDate(MemberDTO member);
+
+    //회원 탈퇴
+    public void removeMember(String user_id);
+
 }

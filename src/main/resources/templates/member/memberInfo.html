@@ -8,7 +8,7 @@
 
 <body>
 <script>
-	const userid = '[[${session.user_id}]]';
+	const user_id = '[[${session.user_id}]]';
 	if(user_id == 0){
 		document.location.href="/member/login";
 	}
@@ -18,7 +18,7 @@
    <div class="boardView">
    
       <div style="width:70%; height:auto; margin:auto; padding:20px; border:none" >
-         <img th:src="@{'/profile/'+ ${memberInfo.stored_file_nm}}" style="display:block;width:80%;height:auto;margin:auto">
+         <img th:src="@{'/profile/'+ ${memberInfo.stored_file_nm}}" style="display:block;width:80%;height:auto;margin:auto" alt="프로필사진">
       </div>
       <div class="field">아이디 : [[${session.user_id}]]</div>
       <div class="field">이름 : [[${session.user_nm}]]</div>
@@ -45,7 +45,7 @@
       <a href="/guide/map">처음으로</a>&nbsp;&nbsp;
       <a href="/member/memberInfoModify">기본정보 변경</a>&nbsp;&nbsp;
       <a href="/member/memberPasswordModify">패스워드 변경</a>&nbsp;&nbsp;
-      <a href="/member/memberOut">회원탈퇴</a>&nbsp;&nbsp;
+      <a href="/member/deleteMember">회원탈퇴</a>&nbsp;&nbsp;
    </div>
    <br><br>
 </div>
