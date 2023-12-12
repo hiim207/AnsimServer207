@@ -7,10 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import java.io.File;
 import java.util.Map;
@@ -53,8 +52,8 @@ public class MemberController {
 			if(memberInfo != null) {
 				//세션 생성
 				session.setMaxInactiveInterval(3600*24*7);//세션 유지 기간 설정
-				session.setAttribute("userid", memberInfo.getUser_nm());
-				session.setAttribute("username", memberInfo.getUser_nm());
+				session.setAttribute("user_id", memberInfo.getUser_nm());
+				session.setAttribute("user_nm", memberInfo.getUser_nm());
 				session.setAttribute("role", memberInfo.getRole());
 
 				return "{\"message\":\"GOOD\"}";
@@ -82,8 +81,8 @@ public class MemberController {
 
 			//세션 생성
 			session.setMaxInactiveInterval(3600*24*7);//세션 유지 기간 설정
-			session.setAttribute("userid", service.findMember(member.getUser_id()).getUser_id());
-			session.setAttribute("username", service.findMember(member.getUser_id()).getUser_nm());
+			session.setAttribute("user_id", service.findMember(member.getUser_id()).getUser_id());
+			session.setAttribute("user_nm", service.findMember(member.getUser_id()).getUser_nm());
 			session.setAttribute("role", service.findMember(member.getUser_id()).getRole());
 
 			//패스워드 확인 후 마지막 패스워드 변경일이 30일이 경과 되었을 경우 ...
@@ -133,8 +132,6 @@ public class MemberController {
 			String pwd = pwdEncoder.encode(inputPassword); // 단방향 암호화
 			member.setPassword(pwd);
 			member.setLast_pw_date(LocalDate.now());
-
-
 		}
 		service.addMember(member);
 
@@ -142,24 +139,28 @@ public class MemberController {
 		Map<String, String> data = new HashMap<>();
 		data.put("message", "GOOD");
 		//data.put("username", member.getUsername());
-		data.put("username", URLEncoder.encode(member.getUser_nm(),"UTF-8"));
+		data.put("user_nm", URLEncoder.encode(member.getUser_nm(),"UTF-8"));
 
 		return data;
 
-		//return "{\"message\":\"GOOD\",\"username\":\""+ URLEncoder.encode(member.getUsername(),"UTF-8") + "\"}";
 	}
 
 	// 회원 가입 시 아이디 중복 화인
 	@ResponseBody
 	@PostMapping("/member/idCheck")
-	public int postIdCheck(@RequestParam String userid) throws Exception {
-		int result = service.findIdCheck(userid);
-
+	public int postIdCheck(@RequestBody String user_id) throws Exception {
+		int result = service.findIdCheck(user_id);
+		System.out.println(result);
 		return result;
-		//if(result == 0)
-		//   return "{\"status\":\"GOOD\"}"; //{"status":"GOOD"}
-		//else return "{\"status\":\"BAD\"}";
-
 	}
+
+	// 회원 정보 보기
+	@GetMapping("/member/memberInfo")
+	public void getMemberInfo(HttpSession session, Model model) throws Exception{
+		String user_id = (String)session.getAttribute("user_id");
+		model.addAttribute("memberInfo", service.findMember(user_id));
+	}
+
+
 
 }

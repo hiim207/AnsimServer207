@@ -30,7 +30,7 @@ a {text-decoration: none; cursor: hand;}
     margin:auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.userid, .password {
+.user_id, .password {
     width: 80%;
     height: 25px;
     border: none;

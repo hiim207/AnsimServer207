@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원정보 보기</title>
+   <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+<script>
+	const userid = '[[${session.user_id}]]';
+	if(user_id == 0){
+		document.location.href="/member/login";
+	}
+</script>
+<div class="main">
+    <h1 style="text-align: center;">회원 정보 보기</h1>
+   <div class="boardView">
+   
+      <div style="width:70%; height:auto; margin:auto; padding:20px; border:none" >
+         <img th:src="@{'/profile/'+ ${memberInfo.stored_file_nm}}" style="display:block;width:80%;height:auto;margin:auto">
+      </div>
+      <div class="field">아이디 : [[${session.user_id}]]</div>
+      <div class="field">이름 : [[${session.user_nm}]]</div>
+      <div class="field">나이 : [[${memberInfo.age}]]</div>
+      <div class="field">성별 : [[${memberInfo.gender}]]</div>
+      <div class="field">MBTI : [[${memberInfo.mbti}]]</div>
+      <div class="field">전화번호 : [[${memberInfo.tel_no}]]</div>
+      <div class="field">동행횟수 : [[${session.ansim_cnt}]]</div>
+      <div class="field">가입일자 : [[${memberInfo.regdate}]]</div>
+      <div class="field">최종 로그인 날짜 : [[${memberInfo.last_login_date}]]</div>
+      <div class="field">최종 로그아웃 날짜 : [[${memberInfo.last_logout_date}]]</div>
+      <div class="field">최종 패스워드 변경일 : [[${memberInfo.last_pw_date}]]</div>
+      
+      <th:block th:if="${memberInfo.role == 'USER'}">
+         <div class="field">회원 권한 : 일반 회원</div>
+      </th:block>
+      <th:block th:if="${memberInfo.role == 'MASTER'}">
+         <div class="field">회원 권한 : 관리자</div>
+      </th:block>
+      <br><br>
+   </div>
+   <br>
+   <div class="bottom_menu">
+      <a href="/guide/map">처음으로</a>&nbsp;&nbsp;
+      <a href="/member/memberInfoModify">기본정보 변경</a>&nbsp;&nbsp;
+      <a href="/member/memberPasswordModify">패스워드 변경</a>&nbsp;&nbsp;
+      <a href="/member/memberOut">회원탈퇴</a>&nbsp;&nbsp;
+   </div>
+   <br><br>
+</div>
+</body>
+</html>
