@@ -1,7 +1,10 @@
 package com.ansim.mapper;
 
 import com.ansim.dto.MemberDTO;
+import com.ansim.dto.OptionDTO;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface MemberMapper {
@@ -41,6 +44,10 @@ public interface MemberMapper {
 
     //회원 탈퇴
     public void deleteMember(String user_id);
+
+
+    // gender code 가져오기
+    public List<String> selectGender(int group_cd);
 
 
 }

@@ -24,11 +24,17 @@
 	select * from MEM_INFO_TBL where user_id = #{user_id}
 </select>
 
-<!-- 회원 정보 변경 memberInfoModify -->
+<!-- gender code 가져오기 -->
+<select id="selectGender" parameterType="int" resultType="String">
+	select opt_nm  from COM_OPT_TBL where group_cd=#{grout_cd};
+</select>
+
+
+	<!-- 회원 정보 변경 memberInfoModify -->
 <update id="updateMember" parameterType="com.ansim.dto.MemberDTO">
 	update MEM_INFO_TBL set
 	    org_file_nm=#{org_file_nm}, stored_file_nm=#{stored_file_nm}, file_size=#{file_size},
-		gender=#{gender},age=#{age}, mbti=#{mbti}
+		gender=#{gender},age=#{age}, mbti=#{mbti}, tel_no=#{tel_no}
 		where user_id=#{user_id}
 </update>
 

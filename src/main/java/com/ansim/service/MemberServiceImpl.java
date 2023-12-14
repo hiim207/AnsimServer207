@@ -1,10 +1,12 @@
 package com.ansim.service;
 
 import com.ansim.dto.MemberDTO;
+import com.ansim.dto.OptionDTO;
 import com.ansim.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -101,6 +103,12 @@ public class MemberServiceImpl implements MemberService {
     public void removeMember(String user_id) {
         mapper.deleteMember(user_id);
 
+    }
+
+    // gender code 가져오기
+    @Override
+    public List<String> findGender(int gourp_cd){
+        return mapper.selectGender(gourp_cd);
     }
 
 }

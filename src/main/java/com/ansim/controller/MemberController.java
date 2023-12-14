@@ -1,6 +1,7 @@
 package com.ansim.controller;
 
 import com.ansim.dto.MemberDTO;
+import com.ansim.dto.OptionDTO;
 import com.ansim.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -12,12 +13,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import java.time.LocalDate;
 import java.util.UUID;
 import java.net.URLEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.Option;
+
+@CrossOrigin("http://localhost:3000/")
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
@@ -27,6 +32,7 @@ public class MemberController {
 
 
 	private final MemberService service;
+
 
 	//로그인 화면 보기
 	@GetMapping("/member/login")
@@ -96,14 +102,17 @@ public class MemberController {
 
 	// 회원 등록 화면 보기
 	@GetMapping("/member/signup")
-		public void getSignup() {
+		public void getSignup(Model model) {
+
+		List<String> genderOptions = service.findGender(2);
+		model.addAttribute("gender", genderOptions);
 
 	}
 
 	// 회원 등록 하기
 	@ResponseBody
 	@PostMapping("/member/signup")
-	public Map<String, String> postSignup(MemberDTO member, @RequestParam("fileUpload") MultipartFile multipartFile) throws Exception{
+	public Map<String, String> postSignup(MemberDTO member,Model model,@RequestParam("fileUpload") MultipartFile multipartFile) throws Exception{
 
 		String path="c:\\Repository\\profile\\";
 		File targetFile;
@@ -184,6 +193,7 @@ public class MemberController {
 		members.setMbti(member.getMbti());
 		members.setAge(member.getAge());
 		members.setGender(member.getGender());
+		members.setTel_no(member.getTel_no());
 		members.setOrg_file_nm(member.getOrg_file_nm());
 		members.setStored_file_nm(member.getStored_file_nm());
 		members.setFile_size(member.getFile_size());

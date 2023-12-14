@@ -73,6 +73,16 @@
 					return false;
 				}
 
+				if(tel_no.value == ''){
+					alert("전화번호를 입력하세요");
+					tel_no.focus();
+					return false;
+				}
+				const beforeTelno = tel_no.value;
+				//-를 삭제하기, 공백 삭제하기 trim문자열 좌우의 빈 공백을 없애주는 함수
+				const afterTelno = beforeTelno.replaceAll(/\-/ig,"").replace(/\ /ig,"").trim();
+				tel_no.value = afterTelno;
+
 
 				const formData = new FormData(RegistryForm);
 
@@ -139,6 +149,8 @@
 					<option value="ENTJ" th:selected="${memberInfo.mbti == 'ENTJ'}">ENTJ</option>
 				</select>
 				<br>
+				전화번호 :
+				<input type="text" th:value="${memberInfo.tel_no}" id="tel_no" name="tel_no">
 			</div>
 
 			<input type="button" id="btnRegister" class="btn_write" value="수정">
