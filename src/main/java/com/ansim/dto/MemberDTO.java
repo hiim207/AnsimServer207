@@ -1,12 +1,14 @@
 package com.ansim.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class MemberDTO {
     private String user_id;
     private String user_nm;
@@ -26,5 +28,9 @@ public class MemberDTO {
     private long file_size;
     private String authkey;
     private int ansim_cnt;
+
+    private String fromSocial;
+
+
 
 }

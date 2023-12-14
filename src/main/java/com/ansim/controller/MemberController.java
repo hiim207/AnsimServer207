@@ -4,6 +4,7 @@ import com.ansim.dto.MemberDTO;
 import com.ansim.dto.OptionDTO;
 import com.ansim.service.MemberService;
 import jakarta.servlet.http.HttpSession;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
