@@ -15,6 +15,9 @@ public interface MemberService {
     // 회원 정보 찾기 selectMember
     public MemberDTO findMember(String user_id) throws Exception;
 
+    // 회원정보 변경 updateMember
+    public void modifyMember(MemberDTO member) throws Exception;
+
     //마지막 로그인시간 수정 updateLastLoginDate
     public void modifyLastLoginDate(MemberDTO member) throws Exception;
 

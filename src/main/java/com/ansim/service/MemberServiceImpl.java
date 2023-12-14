@@ -31,6 +31,11 @@ public class MemberServiceImpl implements MemberService {
         return mapper.selectMember(user_id);
     }
 
+    @Override
+    public void modifyMember(MemberDTO member) throws Exception {
+        mapper.updateMember(member);
+    }
+
     //마지막 로그인시간 수정 updateLastLoginDate
     @Override
     public void modifyLastLoginDate(MemberDTO member) throws Exception {

@@ -24,6 +24,14 @@
 	select * from MEM_INFO_TBL where user_id = #{user_id}
 </select>
 
+<!-- 회원 정보 변경 memberInfoModify -->
+<update id="updateMember" parameterType="com.ansim.dto.MemberDTO">
+	update MEM_INFO_TBL set
+	    org_file_nm=#{org_file_nm}, stored_file_nm=#{stored_file_nm}, file_size=#{file_size},
+		gender=#{gender},age=#{age}, mbti=#{mbti}
+		where user_id=#{user_id}
+</update>
+
 <!-- 최종 로그인 시간 lastlogindateUpdate -->
 <update id="updateLastLoginDate" parameterType="com.ansim.dto.MemberDTO">
    update MEM_INFO_TBL set last_login_date=#{last_login_date} where user_id=#{user_id}

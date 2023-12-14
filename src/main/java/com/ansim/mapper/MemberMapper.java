@@ -15,6 +15,9 @@ public interface MemberMapper {
     // 회원 정보 찾기
     public MemberDTO selectMember(String user_id) throws Exception;
 
+    // 회원정보 변경
+    public void updateMember(MemberDTO member) throws Exception;
+
     //마지막 로그인시간 수정
     public void updateLastLoginDate(MemberDTO member) throws Exception;
 

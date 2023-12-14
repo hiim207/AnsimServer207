@@ -161,6 +161,63 @@ public class MemberController {
 		model.addAttribute("memberInfo", service.findMember(user_id));
 	}
 
+	//회원 기본 정보 변경
+	@GetMapping("/member/memberInfoModify")
+	public void getMemberInfoModify(HttpSession session, Model model) throws Exception{
+		String userid = (String)session.getAttribute("user_id");
+		model.addAttribute("memberInfo", service.findMember(userid));
+	}
+
+	//회원 기본 정보 변경
+	@ResponseBody
+	@PostMapping("/member/memberInfoModify")
+	public Map<String, String> postMemberInfoModify(HttpSession session, MemberDTO member, @RequestParam("fileUpload") MultipartFile multipartFile) throws Exception {
+
+		String userid = (String)session.getAttribute("user_id");
+
+
+		String path="c:\\Repository\\profile\\";
+		File targetFile;
+
+		MemberDTO members = service.findMember(userid);
+		members.setGender(member.getGender());
+		members.setMbti(member.getMbti());
+		members.setAge(member.getAge());
+		members.setGender(member.getGender());
+		members.setOrg_file_nm(member.getOrg_file_nm());
+		members.setStored_file_nm(member.getStored_file_nm());
+		members.setFile_size(member.getFile_size());
+
+		if(!multipartFile.isEmpty()) {
+			String org_filename = multipartFile.getOriginalFilename();
+			// hello.png
+			String org_fileExtension = org_filename.substring(org_filename.lastIndexOf("."));
+			// askdjfklasjdkfljaskldfasdf + .png
+			String stroed_filename = UUID.randomUUID().toString().replaceAll("-", "") + org_fileExtension;
+
+			try {
+				targetFile = new File(path + stroed_filename);
+
+				multipartFile.transferTo(targetFile);
+
+				member.setOrg_file_nm(org_filename);
+				member.setStored_file_nm(stroed_filename);
+				member.setFile_size(multipartFile.getSize());
+
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		service.modifyMember(member);
+
+
+		Map<String, String> data = new HashMap<>();
+		data.put("message", "GOOD");
+		return data;
+	}
+
 	//로그아웃
 	@GetMapping("/member/logout")
 	public void getLogout(HttpSession session,Model model) throws Exception {
