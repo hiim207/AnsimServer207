@@ -4,7 +4,7 @@ window.onload = async() => {
     const getCookie = (name) => {
         const cookies = document.cookie.split(`; `).map((el)=>el.split('='));
         let getItem = [];
-        console.log("cookies = "+ cookies);
+        // console.log("cookies = "+ cookies);
 
         for(let i=0; i<cookies.length; i++){
             if(cookies[i][0] === name){

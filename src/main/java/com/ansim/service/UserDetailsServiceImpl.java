@@ -27,11 +27,13 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
 	@SneakyThrows
 	@Override
-	public UserDetails loadUserByUsername(String user_nm) throws UsernameNotFoundException {
+//	public UserDetails loadUserByUsername(String user_nm) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String user_id) throws UsernameNotFoundException {
 		
 		//username은 스프링 시큐리티가 필터로 작동하면서 로그인 요청에서 가로채온 userid임.
 //		MemberEntity memberInfo = memberRepository.findById(username).get();
-		MemberDTO member = service.findMember(user_nm);
+//		MemberDTO member = service.findMember(user_nm);
+		MemberDTO member = service.findMember(user_id);
 
 		if(member == null) {
 			throw new UsernameNotFoundException("아이디가 존재하지 않습니다.");
@@ -42,9 +44,10 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(member.getRole());
 		grantedAuthorities.add(grantedAuthority);
 		
-		User user = new User(user_nm, member.getPassword(), grantedAuthorities);
-		
-		return user;
+		User user;
+        user = new User(user_id, member.getPassword(), grantedAuthorities);
+
+        return user;
 	}
 
 }

@@ -38,7 +38,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		
 		//마지막 로그인 날짜 등록
 		memberInfo.setLast_login_date(LocalDate.now());
-		service.addMember(memberInfo);
+		service.modifyLastLoginDate(memberInfo);
 //		memberRepository.save(memberInfo);
 		
 		//패스워드 확인 후 마지막 패스워드 변경일이 30일이 경과 되었을 경우 ...
@@ -47,13 +47,13 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		//세션 생성
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(3600*24*7);//세션 유지 기간 설정
-		session.setAttribute("email", memberInfo.getUser_id());
-		session.setAttribute("username", memberInfo.getUser_nm());
+		session.setAttribute("user_id", memberInfo.getUser_id());
+		session.setAttribute("user_nm", memberInfo.getUser_nm());
 		session.setAttribute("role", memberInfo.getRole());
 		
 		log.info("****************** FormLogin 성공 ******************");
 		
-		setDefaultTargetUrl("/board/list?page=1");
+		setDefaultTargetUrl("/guide/map");
 		super.onAuthenticationSuccess(request, response, authentication);
 		
 	}
