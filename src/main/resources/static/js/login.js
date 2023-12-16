@@ -64,13 +64,19 @@ window.onload = async() => {
 
 }
 
+const login = () => {
+    document.loginForm.action = '/member/login';
+    document.loginForm.submit();
+}
+
 // 로그인 처리
 
 const loginCheck = async() => {
 
     const user_id = document.querySelector('#user_id');
     const password = document.querySelector('#password');
-    const authkey = '12345';
+    const rememberMe = document.querySelector('#rememberMe');
+    // const authkey = '12345';
 
     if(user_id.value === '') {
         alert("아이디를 입력하세요.");
@@ -89,36 +95,24 @@ const loginCheck = async() => {
     formData.append("user_id", user_id.value);
     formData.append("password", password.value);
 
-    await fetch('/member/login?autologin=NEW',{
+    await fetch('/member/loginCheck',{
         method: "POST",
         body: formData
     }).then((response) => response.json())
         .then((data) => {
             if(data.message === 'GOOD'){
-                cookieManage(user_id.value,password.value,data.authkey);
-                document.location.href='/guide/map';
+                cookieManage(user_id.value,password.value);
+                login();
             }else if(data.message === 'ID_NOT_FOUND'){
                 msg.innerHTML = '존재하지 않는 아이디입니다.';
             }else if(data.message === 'PASSWORD_NOT_FOUND'){
                 msg.innerHTML = '잘못된 패스워드입니다.';
-            }else if(data.message === 'PASSWORD_CHANGE'){
-                if(confirm('패스워드 변경한지 30일이 지났습니다. 변경하시겠습니까?')){
-                    document.location.href='/member/memberPasswordModify';
-                }else{
-                    alert('비밀번호 변경이 30일 뒤로 연기되었습니다.')
-                    document.location.href='/member/pwCheckPlus';
-                }
             }else {
                 alert("시스템 장애로 로그인이 실패 했습니다.");
             }
         }).catch((error)=> {
             console.log("error = " + error);
         })
-
-    /*
-    document.loginForm.action='/member/login';
-    document.loginForm.submit();
-    */
 }
 
 //-----------아이디 체크 관리-----------------

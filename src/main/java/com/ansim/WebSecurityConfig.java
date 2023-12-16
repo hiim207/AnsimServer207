@@ -70,6 +70,7 @@ public class WebSecurityConfig {
       http
               .authorizeHttpRequests((authz)-> authz
                       .requestMatchers("/member/**").permitAll()
+                      .requestMatchers("/guide/**").permitAll()
                       .requestMatchers("/board/**").hasAnyAuthority("USER","MASTER")
                       .requestMatchers("/master/**").hasAnyAuthority("MASTER")
                       .anyRequest().authenticated());

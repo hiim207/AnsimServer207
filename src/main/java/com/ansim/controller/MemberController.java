@@ -40,86 +40,26 @@ public class MemberController {
 	public void getLogin() { }
 
 	//로그인
+	@PostMapping("/member/login")
+	public void postLogin() {}
+
+	//로그인
 	@ResponseBody
 	@PostMapping("/member/loginCheck")
-	public String postLogin(MemberDTO member,HttpSession session) throws Exception {
+	public String postLogin(MemberDTO member, HttpSession session) throws Exception {
 
 		//아이디 존재 여부 확인
-		if(service.findIdCheck(member.getUser_id()) == 0) {
+		if (service.findIdCheck(member.getUser_id()) == 0) {
 			return "{\"message\":\"ID_NOT_FOUND\"}";
 		}
 
 		//패스워드가 올바르게 들어 왔는지 확인
-		if(!pwdEncoder.matches(member.getPassword(), service.findMember(member.getUser_id()).getPassword())) {
+		if (!pwdEncoder.matches(member.getPassword(), service.findMember(member.getUser_id()).getPassword())) {
 			//잘못된 패스워드 일때
 			return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
 		}
-
 		return "{\"message\":\"GOOD\"}";
-
 	}
-
-	//로그인
-//	@ResponseBody
-//	@PostMapping("/member/login")
-//	public String postLogin(MemberDTO member, HttpSession session, @RequestParam("autologin") String autologin) throws Exception {
-//
-//		String authkey = "";
-//
-//		//로그인 시 authkey 생성
-//		if(autologin.equals("NEW")) {
-//			authkey = UUID.randomUUID().toString().replaceAll("-", "");
-//			member.setAuthkey(authkey);
-//			service.modifyAuthkey(member);
-//		}
-//
-//		//authkey가 클라이언트에 쿠키로 존재할 경우 로그인 과정 없이 세션 생성 후 게시판 목록 페이지로 이동
-//		if(autologin.equals("PASS")) {
-//			MemberDTO memberInfo = service.findAuthkey(member);
-//			if(memberInfo != null) {
-//				//세션 생성
-//				session.setMaxInactiveInterval(3600*24*7);//세션 유지 기간 설정
-//				session.setAttribute("user_id", memberInfo.getUser_nm());
-//				session.setAttribute("user_nm", memberInfo.getUser_nm());
-//				session.setAttribute("role", memberInfo.getRole());
-//
-//				return "{\"message\":\"GOOD\"}";
-//			}
-//		}
-//
-//		//아이디 존재 여부 확인
-//		if(service.findIdCheck(member.getUser_id()) == 0) {
-//			return "{\"message\":\"ID_NOT_FOUND\"}";
-//		}
-//
-//		//패스워드가 올바르게 들어 왔는지 확인
-//		if(!pwdEncoder.matches(member.getPassword(), service.findMember(member.getUser_id()).getPassword())) {
-//			//잘못된 패스워드 일때
-//			return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
-//		}else {
-//			//제대로 된 아이디와 패스워드가 입력되었을 때
-//
-//			//마지막 로그인 날짜 등록
-//			member.setLast_login_date(LocalDate.now());
-//			service.modifyLastLoginDate(member);
-//
-//			LocalDate lastPwDate = service.findMember(member.getUser_id()).getLast_pw_date();
-//			int pwCheck = service.findMember(member.getUser_id()).getPw_chk();
-//
-//			//세션 생성
-//			session.setMaxInactiveInterval(3600*24*7);//세션 유지 기간 설정
-//			session.setAttribute("user_id", service.findMember(member.getUser_id()).getUser_id());
-//			session.setAttribute("user_nm", service.findMember(member.getUser_id()).getUser_nm());
-//			session.setAttribute("role", service.findMember(member.getUser_id()).getRole());
-//
-//			//패스워드 확인 후 마지막 패스워드 변경일이 30일이 경과 되었을 경우 ...
-//			if(LocalDate.now().isAfter(lastPwDate.plusDays(pwCheck*30))){
-//				return "{\"message\":\"PASSWORD_CHANGE\"}";
-//			}
-//
-//			return "{\"message\":\"GOOD\",\"authkey\":\"" + member.getAuthkey() + "\"}";
-//		}
-//	}
 
 	// 회원 등록 화면 보기
 	@GetMapping("/member/signup")

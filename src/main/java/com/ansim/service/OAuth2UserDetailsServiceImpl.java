@@ -63,7 +63,7 @@ public class OAuth2UserDetailsServiceImpl extends DefaultOAuth2UserService{
 		memberOAuth2DTO.setAuthorities(grantedAuthorities);
 		memberOAuth2DTO.setName(member.getUser_nm());
 		
-		session.setAttribute("user_id", user_id);
+		session.setAttribute("user_id", member.getUser_id());
 		session.setAttribute("user_nm", member.getUser_nm());
 		session.setAttribute("role", member.getRole());
 		
