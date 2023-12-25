@@ -19,7 +19,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
 		
-		log.info("********************* 구글 인증 완료🎈 *********************");
+		log.info("********************* 소셜 로그인 인증 완료🎈 *********************");
 		
 		setDefaultTargetUrl("/guide/map");
 		super.onAuthenticationSuccess(request, response, authentication);

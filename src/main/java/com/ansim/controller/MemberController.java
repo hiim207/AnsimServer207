@@ -1,10 +1,10 @@
 package com.ansim.controller;
 
 import com.ansim.dto.MemberDTO;
-import com.ansim.dto.OptionDTO;
 import com.ansim.service.MemberService;
+import com.ansim.util.JWTUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.io.File;
 import java.util.List;
@@ -21,9 +23,8 @@ import java.util.UUID;
 import java.net.URLEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.Option;
 
-@CrossOrigin("http://localhost:3000/")
+@CrossOrigin(origins = "http://localhost:3000")
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
@@ -33,6 +34,9 @@ public class MemberController {
 
 
 	private final MemberService service;
+
+	//JWT 관리 객체 의존성 주입
+	private final JWTUtil jwtUtil;
 
 
 	//로그인 화면 보기
@@ -48,17 +52,66 @@ public class MemberController {
 	@PostMapping("/member/loginCheck")
 	public String postLogin(MemberDTO member, HttpSession session) throws Exception {
 
+//		//아이디 존재 여부 확인
+//		if (service.findIdCheck(member.getUser_id()) == 0) {
+//			return "{\"message\":\"ID_NOT_FOUND\"}";
+//		}
+//		//패스워드가 올바르게 들어 왔는지 확인
+//		if (!pwdEncoder.matches(member.getPassword(), service.findMember(member.getUser_id()).getPassword())) {
+//			//잘못된 패스워드 일때
+//			return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
+//		}
+//		return "{\"message\":\"GOOD\"}";
+		System.out.println("11111111111");
 		//아이디 존재 여부 확인
 		if (service.findIdCheck(member.getUser_id()) == 0) {
 			return "{\"message\":\"ID_NOT_FOUND\"}";
 		}
+		System.out.println("22222222222");
 
 		//패스워드가 올바르게 들어 왔는지 확인
 		if (!pwdEncoder.matches(member.getPassword(), service.findMember(member.getUser_id()).getPassword())) {
 			//잘못된 패스워드 일때
 			return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
 		}
-		return "{\"message\":\"GOOD\"}";
+		System.out.println("3333333333");
+
+//		return "{\"message\":\"GOOD\"}";
+
+		String accessToken = "";
+		String refreshToken = "";
+		//JWT 로그인
+		System.out.println("444444444444");
+
+		Map<String,Object> data = new HashMap<>();
+		data.put("user_id", member.getUser_id());
+		data.put("password", member.getPassword());
+		System.out.println("5555555555");
+
+		//access token & refresh token 생성
+		accessToken = jwtUtil.generateToken(data, 1);
+		refreshToken = jwtUtil.generateToken(data, 5);
+
+		System.out.println("6666666666");
+
+//		String str = "";
+		//최종적으로 클라이언트에 전달할 JSON 값 생성
+
+		System.out.println("777777777");
+
+//		str = "{\"message\":\"JWT\",\"accessToken\":\"" + accessToken + "\",\"refreshToken\":\"" + refreshToken +
+//				"\",\"username\":\"" + URLEncoder.encode(member.getUser_nm(),"UTF-8") + "\",\"role\":\"" + member.getRole() + "\"}";
+		System.out.println("888888888");
+
+		System.out.println("getUser_id: "+member.getUser_id());
+		System.out.println("getPassword: "+member.getPassword());
+		System.out.println("accessToken: "+accessToken);
+		System.out.println("refreshToken: "+refreshToken);
+
+//		System.out.println("str = " + str);
+		return "{\"message\":\"JWT\",\"accessToken\":\"" + accessToken + "\",\"refreshToken\":\"" + refreshToken +"\"}";
+//		return "{\"message\":\"GOOD\"}";
+
 	}
 
 	// 회원 등록 화면 보기
@@ -191,7 +244,8 @@ public class MemberController {
 
 	//로그아웃
 	@GetMapping("/member/logout")
-	public void getLogout(HttpSession session,Model model) throws Exception {
+	public void getLogout(HttpSession session,Model model, String accessToken) throws Exception {
+		System.out.println("컨트롤러 탔음");
 		String userid = (String)session.getAttribute("user_id");
 		String username = (String)session.getAttribute("user_nm");
 
@@ -203,7 +257,28 @@ public class MemberController {
 
 		model.addAttribute("user_id", userid);
 		model.addAttribute("user_nm", username);
+		System.out.println("컨트롤러 탔음2");
+
 		session.invalidate(); //모든 세션 종료 --> 로그아웃...
+		System.out.println("컨트롤러 탔음3");
+
+//		String apiUrl = "https://kapi.kakao.com/v1/user/unlink";
+//		try {
+//			URL url = new URL(apiUrl);
+//			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//			conn.setRequestMethod("POST");
+//			conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+//
+//			int responseCode = conn.getResponseCode();
+//			if (responseCode == HttpURLConnection.HTTP_OK) {
+//				// 연결 끊기 성공
+//			} else {
+//				// 연결 끊기 실패
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+
 	}
 
 	//아이디 찾기

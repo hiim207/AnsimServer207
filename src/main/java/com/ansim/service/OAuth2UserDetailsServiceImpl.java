@@ -85,7 +85,11 @@ public class OAuth2UserDetailsServiceImpl extends DefaultOAuth2UserService{
 		session.setAttribute("user_nm", member.getUser_nm());
 		session.setAttribute("role", member.getRole());
 		session.setAttribute("fromSocial","Y");
+		String accessToken = userRequest.getAccessToken().getTokenValue();
+		session.setAttribute("accessToken", accessToken);
+		session.setAttribute("provider", provider);
 
+		System.out.println(accessToken);
 		return memberOAuth2DTO;		
 		
 	}

@@ -5,15 +5,19 @@
     <title>map</title>
 </head>
 <script src="/js/getCookie.js"></script>
-<script>
+<script th:inline="javascript">
     const logout = () => {
-        if(confirm('로그아웃하시겠습니까?')){
+        if(confirm('로그아웃하시겠습니까???')){
 
             let authkey = getCookie('authkey');
             if(authkey != undefined)
                 document.cookie = 'authkey=' + authkey + ";path=/;max-age=0";
 
+            let accessToken = /*[[${accessToken}]]*/ 'default';
+            // alert(accessToken);
+            document.location.href='https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id=0DtgBMLXkGD_MLl4CrR1&client_secret=bjxM8qs3C3&access_token='+accessToken+'&service_provider=NAVER';
             document.location.href='/member/logout';
+
         }
 
     }
