@@ -50,68 +50,90 @@ public class MemberController {
 	//로그인
 	@ResponseBody
 	@PostMapping("/member/loginCheck")
-	public String postLogin(MemberDTO member, HttpSession session) throws Exception {
+	public String postLogin(MemberDTO memberData) throws Exception {
 
-//		//아이디 존재 여부 확인
-//		if (service.findIdCheck(member.getUser_id()) == 0) {
-//			return "{\"message\":\"ID_NOT_FOUND\"}";
-//		}
-//		//패스워드가 올바르게 들어 왔는지 확인
-//		if (!pwdEncoder.matches(member.getPassword(), service.findMember(member.getUser_id()).getPassword())) {
-//			//잘못된 패스워드 일때
-//			return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
-//		}
-//		return "{\"message\":\"GOOD\"}";
-		System.out.println("11111111111");
-		//아이디 존재 여부 확인
-		if (service.findIdCheck(member.getUser_id()) == 0) {
-			return "{\"message\":\"ID_NOT_FOUND\"}";
-		}
-		System.out.println("22222222222");
-
-		//패스워드가 올바르게 들어 왔는지 확인
-		if (!pwdEncoder.matches(member.getPassword(), service.findMember(member.getUser_id()).getPassword())) {
-			//잘못된 패스워드 일때
-			return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
-		}
-		System.out.println("3333333333");
-
-//		return "{\"message\":\"GOOD\"}";
-
+		System.out.println("1111111111");
 		String accessToken = "";
 		String refreshToken = "";
-		//JWT 로그인
-		System.out.println("444444444444");
+		System.out.println("22222222222");
 
+		//JWT 로그인
 		Map<String,Object> data = new HashMap<>();
-		data.put("user_id", member.getUser_id());
-		data.put("password", member.getPassword());
-		System.out.println("5555555555");
+		data.put("user_id", memberData.getUser_id());
+		data.put("password", memberData.getPassword());
+
+		System.out.println("3333333333");
 
 		//access token & refresh token 생성
 		accessToken = jwtUtil.generateToken(data, 1);
 		refreshToken = jwtUtil.generateToken(data, 5);
 
+		System.out.println("4444444444");
+
+		//아이디 존재 여부 확인
+		if (service.findIdCheck(memberData.getUser_id()) == 0) {
+			return "{\"message\":\"ID_NOT_FOUND\"}";
+		}
+		System.out.println("5555555555");
+
+//		MemberDTO member = mservice.memberInfo(loginData.getEmail());
+		//아이디가 존재하면 읽어온 email로 로그인 정보 가져 오기
+		MemberDTO member = service.findMember(memberData.getUser_id());
+
 		System.out.println("6666666666");
 
-//		String str = "";
-		//최종적으로 클라이언트에 전달할 JSON 값 생성
-
+		//패스워드가 올바르게 들어 왔는지 확인
+		if (!pwdEncoder.matches(memberData.getPassword(), service.findMember(memberData.getUser_id()).getPassword())) {
+			//잘못된 패스워드 일때
+			return "{\"message\":\"PASSWORD_NOT_FOUND\"}";
+		}
 		System.out.println("777777777");
 
-//		str = "{\"message\":\"JWT\",\"accessToken\":\"" + accessToken + "\",\"refreshToken\":\"" + refreshToken +
-//				"\",\"username\":\"" + URLEncoder.encode(member.getUser_nm(),"UTF-8") + "\",\"role\":\"" + member.getRole() + "\"}";
-		System.out.println("888888888");
 
 		System.out.println("getUser_id: "+member.getUser_id());
 		System.out.println("getPassword: "+member.getPassword());
+		System.out.println("getUser_nm: "+member.getUser_nm());
+		System.out.println("getRole: "+member.getRole());
 		System.out.println("accessToken: "+accessToken);
 		System.out.println("refreshToken: "+refreshToken);
 
-//		System.out.println("str = " + str);
-		return "{\"message\":\"JWT\",\"accessToken\":\"" + accessToken + "\",\"refreshToken\":\"" + refreshToken +"\"}";
+		System.out.println("88888888888");
+
+		//최종적으로 클라이언트에 전달할 JSON 값 생성
+		return  "{\"message\":\"JWT\",\"accessToken\":\"" + accessToken + "\",\"refreshToken\":\"" + refreshToken +
+				"\",\"user_nm\":\"" + URLEncoder.encode(member.getUser_nm(),"UTF-8") + "\",\"role\":\"" + member.getRole() + "\"}";
 //		return "{\"message\":\"GOOD\"}";
 
+	}
+
+	//토큰 유효성 검사
+	@GetMapping("/restapi/validate")
+	public String getValidate(HttpServletRequest request) {
+		String token = jwtUtil.getTokenFromAuthorization(request);
+		if(token.equals("JWT_NOT_FOUND"))
+			return "{\"message\":\"bad\"}";
+		String jwtCheck = jwtUtil.validateToken(token);
+
+		switch(jwtCheck) {
+			case "VALID_JWT" : return "{\"message\":\"VALID_JWT\"}";
+			case "EXPIRED_JWT" : return "{\"message\":\"EXPIRED_JWT\"}";
+			case "INVALID_JWT":
+			case "UNSUPPORTED_JWT":
+			case "EMPTY_JWT": return "{\"message\":\"INVALID_JWT\"}";
+		}
+		return null;
+	}
+
+	//refreshToken 관리
+	@PostMapping("/restapi/refreshToken")
+	public String postRefreshToken(MemberDTO memberDTO, @RequestParam("refreshToken") String refreshToken ) {
+
+		Map<String,Object> data = new HashMap<>();
+		data.put("email", memberDTO.getUser_id());
+		data.put("password", memberDTO.getPassword());
+
+		//access token & refresh token 생성
+		return "{\"accessToken\":\"" + jwtUtil.generateToken(data, 1) + ",\"refreshToken\":\"" + jwtUtil.generateToken(data, 5) + "\"}";
 	}
 
 	// 회원 등록 화면 보기
